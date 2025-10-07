@@ -1,0 +1,36 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Environment & Configuration
+.env
+.env.backup
+.env.production
+auth.json
+.phpactor.json
+
+# Storage & Cache
+/storage/*.key
+/storage/pail
+app/storage/
+.phpunit.result.cache
+/.phpunit.cache
+
+# Public Assets
+/public/build
+/public/hot
+/public/storage
+
+# Database
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Build & Logs
+npm-debug.log
+yarn-error.log
+bootstrap/compiled.php
+
+# IDE & Editors
+.editorconfig
+/.idea
+/.zed
