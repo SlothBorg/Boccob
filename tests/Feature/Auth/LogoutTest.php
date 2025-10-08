@@ -2,6 +2,12 @@
 
 use App\Models\User;
 
+test("guests cannot logout", function () {
+    $response = $this->post(route("logout"));
+
+    $response->assertRedirect(route("login"));
+});
+
 test("authenticated users can logout", function () {
     $user = User::factory()->create();
 
@@ -17,12 +23,6 @@ test("logout redirects to home page", function () {
     $response = $this->actingAs($user)->post(route("logout"));
 
     $response->assertRedirect(route("home"));
-});
-
-test("guests cannot logout", function () {
-    $response = $this->post(route("logout"));
-
-    $response->assertRedirect(route("login"));
 });
 
 test("user is no longer authenticated after logout", function () {
