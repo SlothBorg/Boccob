@@ -1,22 +1,17 @@
-<?php namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function index()
+    public function login(Request $request)
     {
-        // Redirect to dashboard if already logged in
         if (Auth::check()) {
             return redirect("/dashboard");
         }
 
-        return view("welcome");
-    }
-
-    public function login(Request $request)
-    {
         $credentials = $request->validate([
             "email" => "required|email",
             "password" => "required",

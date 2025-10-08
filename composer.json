@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.2",
         "laravel-frontend-presets/tall": "^9.1",
-        "laravel/fortify": "^1.30",
+        "laravel/fortify": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.1.1",
