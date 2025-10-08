@@ -4,8 +4,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 test("guests can view the login page", function () {
-    $this->withoutExceptionHandling();
-
     $response = $this->get(route("login"));
 
     $response->assertStatus(200)->assertViewIs("pages.login");
