@@ -30,8 +30,7 @@ test("users can login with valid credentials", function () {
         "password" => "password123",
     ]);
 
-    $response->assertRedirect(route("dashboard"));
-    $this->assertAuthenticatedAs($user);
+    $response->assertRedirect(route("dashboard"))->assertAuthenticatedAs($user);
 });
 
 test("users cannot login with invalid email", function () {
