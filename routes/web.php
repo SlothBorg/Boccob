@@ -1,44 +1,56 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Passwords\Confirm;
+use App\Livewire\Auth\Passwords\Email;
+use App\Livewire\Auth\Passwords\Reset;
+use App\Livewire\Auth\Register;
+use App\Livewire\Auth\Verify;
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Features;
-use Livewire\Volt\Volt;
 
-Route::get("/", function () {
-    return view("pages.welcome");
-})->name("home");
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-Route::view("dashboard", "dashboard")
-    ->middleware(["auth", "verified"])
-    ->name("dashboard");
+Route::view('/', 'welcome')->name('home');
 
-// Route::get("/", [LoginController::class, "index"])->name("home");
-// Route::post("/login", [LoginController::class, "login"])->name("login");
+Route::middleware('guest')->group(function () {
+    Route::get('login', Login::class)
+        ->name('login');
 
-// Route::middleware(["auth"])->group(function () {
-//     Route::redirect("settings", "settings/profile");
+    Route::get('register', Register::class)
+        ->name('register');
+});
 
-//     Volt::route("settings/profile", "settings.profile")->name("profile.edit");
-//     Volt::route("settings/password", "settings.password")->name(
-//         "password.edit",
-//     );
-//     Volt::route("settings/appearance", "settings.appearance")->name(
-//         "appearance.edit",
-//     );
+Route::get('password/reset', Email::class)
+    ->name('password.request');
 
-//     Volt::route("settings/two-factor", "settings.two-factor")
-//         ->middleware(
-//             when(
-//                 Features::canManageTwoFactorAuthentication() &&
-//                     Features::optionEnabled(
-//                         Features::twoFactorAuthentication(),
-//                         "confirmPassword",
-//                     ),
-//                 ["password.confirm"],
-//                 [],
-//             ),
-//         )
-//         ->name("two-factor.show");
-// });
+Route::get('password/reset/{token}', Reset::class)
+    ->name('password.reset');
 
-require __DIR__ . "/auth.php";
+Route::middleware('auth')->group(function () {
+    Route::get('email/verify', Verify::class)
+        ->middleware('throttle:6,1')
+        ->name('verification.notice');
+
+    Route::get('password/confirm', Confirm::class)
+        ->name('password.confirm');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
+        ->middleware('signed')
+        ->name('verification.verify');
+
+    Route::post('logout', LogoutController::class)
+        ->name('logout');
+});

@@ -1,7 +1,18 @@
 <?php
 
-test('returns a successful response', function () {
-    $response = $this->get(route('home'));
+namespace Tests\Feature;
 
-    $response->assertStatus(200);
-});
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testBasicTest()
+    {
+        $this->get(route('home'))->assertSuccessful();
+    }
+}
