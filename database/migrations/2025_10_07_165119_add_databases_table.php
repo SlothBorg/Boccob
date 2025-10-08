@@ -12,9 +12,13 @@ return new class extends Migration {
     {
         Schema::create("databases", function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->string("name")->unique();
             $table->string("type");
-            $table->string("connection_name")->unique();
+            $table->string("host");
+            $table->string("port");
+            $table->string("username");
+            $table->string("password");
+            $table->string("connection_string")->unique();
             $table->timestamps();
         });
     }

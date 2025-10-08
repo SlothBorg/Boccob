@@ -7,7 +7,14 @@ use App\Enums\DatabaseType;
 
 class Database extends Model
 {
-    protected $fillable = ["name", "type", "connection_name"];
+    protected $fillable = [
+        "name",
+        "type",
+        "host",
+        "port",
+        "username",
+        "password",
+    ];
 
     protected $casts = [
         "type" => DatabaseType::class,
