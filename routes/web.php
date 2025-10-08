@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", [LoginController::class, "index"])->name("index");
+Route::get("/", [LoginController::class, "index"])->name("home");
 Route::post("login", [LoginController::class, "login"])->name("login");
 
 // Route::middleware("guest")->group(function () {
@@ -45,5 +45,5 @@ Route::middleware("auth")->group(function () {
     //     ->middleware("signed")
     //     ->name("verification.verify");
 
-    Route::post("logout", [LogoutController::class, "logout"])->name("logout");
+    Route::post("logout", LogoutController::class)->name("logout");
 });

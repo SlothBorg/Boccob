@@ -1,34 +1,48 @@
 <?php
 
-namespace Tests\Feature\Auth;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
-use Tests\TestCase;
 
-class LogoutTest extends TestCase
-{
-    use RefreshDatabase;
+test("authenticated users can logout", function () {
+    $user = User::factory()->create();
 
-    /** @test */
-    public function an_authenticated_user_can_log_out()
-    {
-        $user = User::factory()->create();
-        $this->be($user);
+    $response = $this->actingAs($user)->post(route("logout"));
 
-        $this->post(route('logout'))
-            ->assertRedirect(route('home'));
+    $response->assertRedirect(route("home"));
+    $this->assertGuest();
+});
 
-        $this->assertFalse(Auth::check());
-    }
+test("logout redirects to home page", function () {
+    $user = User::factory()->create();
 
-    /** @test */
-    public function an_unauthenticated_user_can_not_log_out()
-    {
-        $this->post(route('logout'))
-            ->assertRedirect(route('login'));
+    $response = $this->actingAs($user)->post(route("logout"));
 
-        $this->assertFalse(Auth::check());
-    }
-}
+    $response->assertRedirect(route("home"));
+});
+
+test("guests cannot logout", function () {
+    $response = $this->post(route("logout"));
+
+    $response->assertRedirect(route("login"));
+});
+
+test("user is no longer authenticated after logout", function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+    $this->assertAuthenticatedAs($user);
+
+    $this->post(route("logout"));
+
+    $this->assertGuest();
+});
+
+test("logout can be called multiple times without error", function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->post(route("logout"));
+    $this->assertGuest();
+
+    // Try logging out again (should just redirect)
+    $response = $this->post(route("logout"));
+    $response->assertRedirect(route("login"));
+});

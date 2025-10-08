@@ -1,8 +1,9 @@
 <?php namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class LoginController extends Controller
 {
@@ -15,18 +16,13 @@ class LoginController extends Controller
         }
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         if (Auth::check()) {
             return redirect()->route("dashboard");
         }
 
-        $credentials = $request->validate([
-            "email" => "required|email",
-            "password" => "required",
-        ]);
-
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->only("email", "password"))) {
             $request->session()->regenerate();
             return redirect()->route("dashboard");
         }
