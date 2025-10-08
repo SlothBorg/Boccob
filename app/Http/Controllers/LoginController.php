@@ -1,4 +1,3 @@
-// app/Http/Controllers/WelcomeController.php
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
