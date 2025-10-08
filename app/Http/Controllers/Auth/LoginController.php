@@ -6,10 +6,19 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function index()
+    {
+        if (Auth::check()) {
+            return redirect()->route("dashboard");
+        } else {
+            return view("pages.login");
+        }
+    }
+
     public function login(Request $request)
     {
         if (Auth::check()) {
-            return redirect("/dashboard");
+            return redirect()->route("dashboard");
         }
 
         $credentials = $request->validate([
@@ -19,12 +28,12 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended("/dashboard");
+            return redirect()->route("dashboard");
         }
 
         return back()
             ->withErrors([
-                "email" => "These credentials do not match our records.",
+                "login" => "These credentials do not match our records.",
             ])
             ->onlyInput("email");
     }

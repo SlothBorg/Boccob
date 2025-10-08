@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view("/", "welcome")->name("home");
-Route::get("login", [LoginController::class, "login"])->name("login");
+Route::get("/", [LoginController::class, "index"])->name("index");
+Route::post("login", [LoginController::class, "login"])->name("login");
 
 // Route::middleware("guest")->group(function () {
 //     Route::get("login", LoginController::class)->name("login");
@@ -40,6 +40,7 @@ Route::get("login", [LoginController::class, "login"])->name("login");
 // });
 
 Route::middleware("auth")->group(function () {
+    Route::view("/dashboard", "pages.dashboard")->name("dashboard");
     // Route::get("email/verify/{id}/{hash}", EmailVerificationController::class)
     //     ->middleware("signed")
     //     ->name("verification.verify");
