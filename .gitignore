@@ -17,9 +17,7 @@ app/storage/
 /.phpunit.cache
 
 # Public Assets
-/public/build
-/public/hot
-/public/storage
+/public/*
 
 # Database
 /database/*.sqlite
